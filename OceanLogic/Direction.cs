@@ -100,7 +100,7 @@ namespace OceanLogic
 
             return _ocean.OceanViewer.GetCellAt(position.X + 1, position.Y - 1);
         }
-       
+
         private List<Cell> GetNeighbourCells(Coordinate position) //Returns a list of neighboring cells
         {
             var cells = new List<Cell>();
@@ -131,15 +131,15 @@ namespace OceanLogic
                         case (int)Side.North:
                             coordinates.Add(new Coordinate
                             {
-                                X = position.X - 1, 
+                                X = position.X - 1,
                                 Y = position.Y
                             });
                             break;
                         case (int)Side.South:
-                            coordinates.Add(new Coordinate 
-                            { 
-                                X = position.X + 1, 
-                                Y = position.Y 
+                            coordinates.Add(new Coordinate
+                            {
+                                X = position.X + 1,
+                                Y = position.Y
                             });
                             break;
                         case (int)Side.East:
@@ -246,9 +246,12 @@ namespace OceanLogic
 
                 _ocean[position.X, position.Y] = cell;
             }
-            catch (IndexOfGameFieldAbroadException)
+            catch (IndexOfGameFieldAbroadException e)
             {
-                throw;
+                System.Console.WriteLine("Error: {0}", e.Message);
+                System.Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                System.Console.ReadKey();
+                System.Environment.Exit(0);
             }
         }
         #endregion
