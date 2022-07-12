@@ -2,6 +2,7 @@
 using Game.UI;
 using OceanLogic;
 using OceanLogic.Controllers;
+using OceanLogic.Exceptions;
 using System;
 
 namespace Game
@@ -27,45 +28,58 @@ namespace Game
             Console.WriteLine("Current amount of obstacles (default is {0}): {1}", GameSettings.defaultNumObstacles, _ocean.NumObstacles);
             Console.WriteLine("Current amount of iterations (default is {0}): {1}\n", GameSettings.defaultNumIterations, _ocean.NumIterations);
 
-            int numPrey, numPredators, numObstacles, numIterations;
+            int numPrey = 0, numPredators = 0, numObstacles = 0, numIterations = 0;
 
             try
             {
                 Console.Write("Input a number of prey: ");
-                numPrey = Int32.Parse(Console.ReadLine());
-
-                if (numPrey >= (_ocean.NumRows * _ocean.NumColumns))
+                while (!Int32.TryParse(Console.ReadLine(), out numPrey))
                 {
-                    numPrey /= 4;
+                    Console.Write("Incorrect value! Reinput: ");
                 }
 
                 Console.Write("Input a number of predators: ");
-                numPredators = Int32.Parse(Console.ReadLine());
-
-                if (numPredators >= (_ocean.NumRows * _ocean.NumColumns - _ocean.NumPrey))
+                while (!Int32.TryParse(Console.ReadLine(), out numPredators))
                 {
-                    numPredators /= 4;
+                    Console.Write("Incorrect value! Reinput: ");
                 }
 
                 Console.Write("Input a number of obstacles: ");
-                numObstacles = Int32.Parse(Console.ReadLine());
-
-                if (numObstacles >= (_ocean.NumRows * _ocean.NumColumns))
+                while (!Int32.TryParse(Console.ReadLine(), out numObstacles))
                 {
-                    numObstacles /= 4;
+                    Console.Write("Incorrect value! Reinput: ");
                 }
 
                 Console.Write("Input a number of iterations: ");
-                numIterations = Int32.Parse(Console.ReadLine());
+                while (!Int32.TryParse(Console.ReadLine(), out numIterations))
+                {
+                    Console.Write("Incorrect value! Reinput: ");
+                }
 
-                return (numPrey, numPredators, numObstacles, numIterations);
+                while (numIterations < 0)
+                {
+                    Console.Write("Number of iterations cannot be less than 0! Reinput: ");
+                    numIterations = Int32.Parse(Console.ReadLine());
+                }
+
+                int numberGameObject = numPredators + numPrey + numObstacles;
+                int fieldSize = _ocean.NumColumns * _ocean.NumRows;
+
+                if (numberGameObject > fieldSize)
+                {
+                    throw new GameFieldOverfillingException();
+                }
+                
             }
-            catch (FormatException)
+            catch (GameFieldOverfillingException e)
             {
-                Console.WriteLine("Wrong input!");
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
 
-            return (0, 0, 0, 0);
+            return (numPrey, numPredators, numObstacles, numIterations);
         }
 
         private void DisplayMenu()
