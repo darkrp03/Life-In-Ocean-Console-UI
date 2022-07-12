@@ -1,5 +1,4 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
 
 namespace OceanLogic.GameObjects
@@ -21,29 +20,14 @@ namespace OceanLogic.GameObjects
         #region Methods
         public virtual void Reproduce(Coordinate position) //Creates new Prey in specific coordinate
         {
-            try
-            {
-                ocean.Direction.AssignCellAt(position, new Prey(position, ocean));
-            }
-            catch (IndexOfGameFieldAbroadException e)
-            {
-                e.DisplayErrorAndExit();
-            }
+            ocean.Direction.AssignCellAt(position, new Prey(position, ocean));
         }
 
         public virtual void Move(Coordinate oldPosition, Coordinate newPosition) //Creates new Cell in the old coordinate and creates new Prey in the new coordinate
         {
             Offset = newPosition;
-
-            try
-            {
-                ocean.Direction.AssignCellAt(oldPosition, null);
-                ocean.Direction.AssignCellAt(newPosition, this);
-            }
-            catch(IndexOfGameFieldAbroadException e)
-            {
-                e.DisplayErrorAndExit();
-            }
+            ocean.Direction.AssignCellAt(oldPosition, null);
+            ocean.Direction.AssignCellAt(newPosition, this);
         }
 
         public override void Process()

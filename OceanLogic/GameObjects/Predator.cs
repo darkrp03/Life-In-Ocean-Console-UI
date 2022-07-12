@@ -1,5 +1,4 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.Interfaces;
+﻿using OceanLogic.Interfaces;
 
 namespace OceanLogic.GameObjects
 {
@@ -25,30 +24,15 @@ namespace OceanLogic.GameObjects
         }
 
         public override void Reproduce(Coordinate position) //Creates new Predators in specific coordinate
-        {         
-            try
-            {
-                ocean.Direction.AssignCellAt(position, new Predator(position, ocean));
-            }
-            catch(IndexOfGameFieldAbroadException e)
-            {
-                e.DisplayErrorAndExit();
-            }
+        {
+            ocean.Direction.AssignCellAt(position, new Predator(position, ocean));
         }
 
         public override void Move(Coordinate oldPosition, Coordinate newPosition) //Creates new Cell in the old coordinate and creates new Predator in the new coordinate
         {
             Offset = newPosition;
-
-            try
-            {
-                ocean.Direction.AssignCellAt(oldPosition, null);
-                ocean.Direction.AssignCellAt(Offset, this);
-            }
-            catch(IndexOfGameFieldAbroadException e)
-            {
-                e.DisplayErrorAndExit();
-            }
+            ocean.Direction.AssignCellAt(oldPosition, null);
+            ocean.Direction.AssignCellAt(Offset, this);
         }
 
         public override void Process()
@@ -81,14 +65,7 @@ namespace OceanLogic.GameObjects
             }
             else
             {
-                try
-                {
-                    ocean.Direction.AssignCellAt(Offset, null);
-                }
-                catch (IndexOfGameFieldAbroadException e)
-                {
-                    e.DisplayErrorAndExit();
-                }
+                ocean.Direction.AssignCellAt(Offset, null);
             }
         }
         #endregion
