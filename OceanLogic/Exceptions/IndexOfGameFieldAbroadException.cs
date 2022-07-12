@@ -1,12 +1,8 @@
-﻿
-
-using System;
-
-namespace OceanLogic.Exceptions
+﻿namespace OceanLogic.Exceptions
 {
     public class IndexOfGameFieldAbroadException : OceanLogicException
     {
-        public IndexOfGameFieldAbroadException()
+        public IndexOfGameFieldAbroadException() : base("The index went beyond the boundaries of the playing field!")
         {
         }
 
