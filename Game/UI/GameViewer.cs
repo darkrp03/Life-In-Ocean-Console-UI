@@ -1,9 +1,8 @@
-﻿using System;
-using OceanLogic;
-using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic;
 using OceanLogic.GameObjects;
+using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
+using System;
 
 namespace Game.UI
 {
@@ -90,29 +89,22 @@ namespace Game.UI
             {
                 for (int j = 0; j < _ocean.NumColumns; j++)
                 {
-                    try
-                    {
-                        Cell cell = _ocean.GetCellAt(i, j);
+                    Cell cell = _ocean.GetCellAt(i, j);
 
-                        if (cell != null)
-                        {
-                            switch (cell.Image)
-                            {
-                                case GameSettings.defaultPreyImage:
-                                    numPrey++;
-                                    break;
-                                case GameSettings.defaultPredatorImage:
-                                    numPredators++;
-                                    break;
-                                case GameSettings.defaultObstacleImage:
-                                    numObstacles++;
-                                    break;
-                            }
-                        }
-                    }
-                    catch (IndexOfGameFieldAbroadException e)
+                    if (cell != null)
                     {
-                        e.DisplayErrorAndExit();
+                        switch (cell.Image)
+                        {
+                            case GameSettings.defaultPreyImage:
+                                numPrey++;
+                                break;
+                            case GameSettings.defaultPredatorImage:
+                                numPredators++;
+                                break;
+                            case GameSettings.defaultObstacleImage:
+                                numObstacles++;
+                                break;
+                        }
                     }
                 }
             }
