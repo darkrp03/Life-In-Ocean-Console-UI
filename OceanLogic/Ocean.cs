@@ -31,7 +31,6 @@ namespace OceanLogic
         #endregion
 
         #region Properties
-
         public int NumPrey
         {
             get => _numPrey;
@@ -89,14 +88,17 @@ namespace OceanLogic
                 if (x < 0 || y < 0)
                 {
                     throw new IndexOfGameFieldAbroadException("Playing field square index abroad!");
-                }
-
-                return this[x, y];
+                }                
             }
-            catch (IndexOfGameFieldAbroadException)
+            catch (IndexOfGameFieldAbroadException e)
             {
-                throw;
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
+
+            return this[x, y];
         }
 
         public void ResetSettings()
