@@ -17,7 +17,7 @@ namespace Game
         {
             _ocean = new Ocean();
             _gameViewer = new GameViewer(_ocean);
-            _oceanController = new OceanController(_ocean, _gameViewer);
+            _oceanController = new OceanController(_ocean, _gameViewer);     
         }
 
         private (int, int, int, int) ChangeSettings()
@@ -85,6 +85,7 @@ namespace Game
         private void DisplayMenu()
         {
             Console.Clear();
+
             Console.WriteLine("****************");
             Console.WriteLine("1.Play");
             Console.WriteLine("2.Change settings");
