@@ -1,5 +1,4 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
 using System;
 using System.Threading;
@@ -83,19 +82,9 @@ namespace OceanLogic
         #region Methods
         public Cell GetCellAt(int x, int y) //Returns cell by position
         {
-            try
+            if (x < 0 || y < 0)
             {
-                if (x < 0 || y < 0)
-                {
-                    throw new IndexOfGameFieldAbroadException("Playing field square index abroad!");
-                }                
-            }
-            catch (IndexOfGameFieldAbroadException e)
-            {
-                Console.WriteLine("Error: {0}", e.Message);
-                Console.WriteLine("Stack trace: {0}", e.StackTrace);
-                Console.ReadKey();
-                Environment.Exit(0);
+                throw new IndexOutOfRangeException("The index x or y went beyond the boundaries of the playing field!");
             }
 
             return this[x, y];
