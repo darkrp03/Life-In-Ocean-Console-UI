@@ -1,38 +1,56 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.Interfaces;
+﻿using OceanLogic.Interfaces;
+using System;
 
 namespace OceanLogic.GameObjects
 {
     public class Predator : Prey
     {
         #region Fields
-        private int timeToFeed;
+        private int _timeToFeed;
         #endregion
 
         #region Ctor
         public Predator(Coordinate offset, IOcean ocean) : base(offset, ocean)
         {
-            timeToFeed = GameSettings.defaultTimeToFeed;
-            timeToReproduce = GameSettings.defaultTimeToReproduce;
+            _timeToFeed = GameSettings.defaultTimeToFeed;
+            _timeToReproduce = GameSettings.defaultTimeToReproduce;
             image = GameSettings.defaultPredatorImage;
         }
         #endregion
 
         #region Methods
+        private void Die()
+        {
+            try
+            {
+                ocean.Direction.AssignCellAt(Offset, null);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+        }
+
         private void Eat(Coordinate preyNeighbourPosition)
         {
             Move(Offset, preyNeighbourPosition);
         }
 
         public override void Reproduce(Coordinate position) //Creates new Predators in specific coordinate
-        {         
+        {
             try
             {
                 ocean.Direction.AssignCellAt(position, new Predator(position, ocean));
             }
-            catch(IndexOfGameFieldAbroadException e)
+            catch (IndexOutOfRangeException e)
             {
-                e.DisplayErrorAndExit();
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
 
@@ -45,9 +63,12 @@ namespace OceanLogic.GameObjects
                 ocean.Direction.AssignCellAt(oldPosition, null);
                 ocean.Direction.AssignCellAt(Offset, this);
             }
-            catch(IndexOfGameFieldAbroadException e)
+            catch (IndexOutOfRangeException e)
             {
-                e.DisplayErrorAndExit();
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
 
@@ -55,16 +76,16 @@ namespace OceanLogic.GameObjects
         {
             Coordinate newPosition = ocean.Direction.GetEmptyNeighborCoord(Offset);
 
-            if (timeToFeed-- > 0)
+            if (_timeToFeed-- > 0)
             {
-                if (timeToReproduce-- > 0)
+                if (_timeToReproduce-- > 0)
                 {
                     Coordinate preyNeighbourPosition = ocean.Direction.GetPreyNeighborCoord(GameSettings.defaultPreyImage, Offset);
 
                     if (preyNeighbourPosition.X != Offset.X || preyNeighbourPosition.Y != Offset.Y)
                     {
                         Eat(preyNeighbourPosition);
-                        timeToFeed = GameSettings.defaultTimeToFeed;
+                        _timeToFeed = GameSettings.defaultTimeToFeed;
                     }
                     else if (newPosition.X != Offset.X || newPosition.Y != Offset.Y)
                     {
@@ -81,14 +102,7 @@ namespace OceanLogic.GameObjects
             }
             else
             {
-                try
-                {
-                    ocean.Direction.AssignCellAt(Offset, null);
-                }
-                catch (IndexOfGameFieldAbroadException e)
-                {
-                    e.DisplayErrorAndExit();
-                }
+                Die();
             }
         }
         #endregion

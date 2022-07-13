@@ -1,5 +1,6 @@
 ﻿using OceanLogic.GameObjects;
 using OceanLogic.Interfaces;
+using System;
 using System.Threading;
 
 namespace OceanLogic.Controllers
@@ -9,6 +10,7 @@ namespace OceanLogic.Controllers
         #region Fields
         private readonly Ocean _ocean;
         private readonly IGameViewer _gameView;
+        private bool _isPausedGame = false;
         #endregion
 
         #region Ctor
@@ -65,6 +67,35 @@ namespace OceanLogic.Controllers
             AddObstacle();
         }
 
+        private void DetectKey() //Detects the key that the user enters
+        {
+            if (Console.KeyAvailable)
+            {
+                var keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.P)
+                {
+                    PauseOrResumeGame();
+                }
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    Environment.Exit(0);
+                }
+            }
+        }
+
+        private void PauseOrResumeGame()
+        {
+            if (_isPausedGame)
+            {
+                _isPausedGame = false;
+            }
+            else
+            {
+                _isPausedGame = true;
+            }
+        }
+
         public void SetSettings(int numPrey, int numPredators, int numObstacles, int numIterations)
         {
             _ocean.NumPrey = numPrey;
@@ -79,10 +110,25 @@ namespace OceanLogic.Controllers
 
             for (int i = 0; i < _ocean.NumIterations; i++)
             {
+                DetectKey();
+
+                while (_isPausedGame)
+                {
+                    DetectKey();
+
+                    if (!_isPausedGame)
+                    {
+                        break;
+                    }
+
+                    Thread.Sleep(50);
+                }
+
                 if (_ocean.NumPrey <= 0 || _ocean.NumPredators <= 0)
                 {
                     break;
                 }
+
                 _gameView.DisplayField(i);
                 _ocean.Run();
             }

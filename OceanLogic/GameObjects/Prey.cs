@@ -1,19 +1,19 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
+using System;
 
 namespace OceanLogic.GameObjects
 {
     public class Prey : Cell
     {
         #region Fields
-        protected int timeToReproduce;
+        protected int _timeToReproduce;
         #endregion
 
         #region Ctor
         public Prey(Coordinate offset, IOcean ocean) : base(offset, ocean)
         {
-            timeToReproduce = GameSettings.defaultTimeToReproduce;
+            _timeToReproduce = GameSettings.defaultTimeToReproduce;
             image = GameSettings.defaultPreyImage;
         }
         #endregion
@@ -25,9 +25,12 @@ namespace OceanLogic.GameObjects
             {
                 ocean.Direction.AssignCellAt(position, new Prey(position, ocean));
             }
-            catch (IndexOfGameFieldAbroadException e)
+            catch (IndexOutOfRangeException e)
             {
-                e.DisplayErrorAndExit();
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
 
@@ -40,9 +43,12 @@ namespace OceanLogic.GameObjects
                 ocean.Direction.AssignCellAt(oldPosition, null);
                 ocean.Direction.AssignCellAt(newPosition, this);
             }
-            catch(IndexOfGameFieldAbroadException e)
+            catch (IndexOutOfRangeException e)
             {
-                e.DisplayErrorAndExit();
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
 
@@ -50,7 +56,7 @@ namespace OceanLogic.GameObjects
         {
             Coordinate newPosition = ocean.Direction.GetEmptyNeighborCoord(Offset);
 
-            if (timeToReproduce-- > 0)
+            if (_timeToReproduce-- > 0)
             {
                 if (newPosition.X != Offset.X || newPosition.Y != Offset.Y)
                 {
@@ -62,7 +68,7 @@ namespace OceanLogic.GameObjects
                 if (newPosition.X != Offset.X || newPosition.Y != Offset.Y)
                 {
                     Reproduce(newPosition);
-                    timeToReproduce = GameSettings.defaultTimeToFeed;
+                    _timeToReproduce = GameSettings.defaultTimeToFeed;
                 }
             }
         }

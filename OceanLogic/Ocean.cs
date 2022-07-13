@@ -1,5 +1,4 @@
-﻿using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
 using System;
 using System.Threading;
@@ -31,7 +30,6 @@ namespace OceanLogic
         #endregion
 
         #region Properties
-
         public int NumPrey
         {
             get => _numPrey;
@@ -84,19 +82,12 @@ namespace OceanLogic
         #region Methods
         public Cell GetCellAt(int x, int y) //Returns cell by position
         {
-            try
+            if (x < 0 || y < 0)
             {
-                if (x < 0 || y < 0)
-                {
-                    throw new IndexOfGameFieldAbroadException("Playing field square index abroad!");
-                }
+                throw new IndexOutOfRangeException("The index x or y went beyond the boundaries of the playing field!");
+            }
 
-                return this[x, y];
-            }
-            catch (IndexOfGameFieldAbroadException)
-            {
-                throw;
-            }
+            return this[x, y];
         }
 
         public void ResetSettings()

@@ -45,8 +45,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="Exceptions\OceanLogicException.cs" />
-    <Compile Include="Exceptions\IndexOfGameFieldAbroadException.cs" />
+    <Compile Include="Exceptions\GameFieldOverfillingException.cs" />
     <Compile Include="GameObjects\AbstractObjects\Cell.cs" />
     <Compile Include="GameObjects\Obstacle.cs" />
     <Compile Include="GameObjects\Predator.cs" />

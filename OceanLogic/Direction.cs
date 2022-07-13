@@ -1,7 +1,7 @@
 ﻿using OceanLogic.Enums;
-using OceanLogic.Exceptions;
 using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace OceanLogic
@@ -22,7 +22,6 @@ namespace OceanLogic
         #region Methods
         private Cell GetNorthCell(Coordinate position) //Returns western neighbour cell
         {
-
             if (position.X - 1 < 0)
             {
                 return _ocean.OceanViewer.GetCellAt(position.X, position.Y);
@@ -100,7 +99,7 @@ namespace OceanLogic
 
             return _ocean.OceanViewer.GetCellAt(position.X + 1, position.Y - 1);
         }
-       
+
         private List<Cell> GetNeighbourCells(Coordinate position) //Returns a list of neighboring cells
         {
             var cells = new List<Cell>();
@@ -131,15 +130,15 @@ namespace OceanLogic
                         case (int)Side.North:
                             coordinates.Add(new Coordinate
                             {
-                                X = position.X - 1, 
+                                X = position.X - 1,
                                 Y = position.Y
                             });
                             break;
                         case (int)Side.South:
-                            coordinates.Add(new Coordinate 
-                            { 
-                                X = position.X + 1, 
-                                Y = position.Y 
+                            coordinates.Add(new Coordinate
+                            {
+                                X = position.X + 1,
+                                Y = position.Y
                             });
                             break;
                         case (int)Side.East:
@@ -237,19 +236,12 @@ namespace OceanLogic
 
         public void AssignCellAt(Coordinate position, Cell cell) //Changes the value of cell
         {
-            try
+            if (position.X < 0 || position.Y < 0)
             {
-                if (position.X < 0 || position.Y < 0)
-                {
-                    throw new IndexOfGameFieldAbroadException("Playing field square index abroad!");
-                }
+                throw new IndexOutOfRangeException("The index x or y went beyond the boundaries of the playing field!");
+            }
 
-                _ocean[position.X, position.Y] = cell;
-            }
-            catch (IndexOfGameFieldAbroadException)
-            {
-                throw;
-            }
+            _ocean[position.X, position.Y] = cell;
         }
         #endregion
     }

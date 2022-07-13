@@ -1,9 +1,8 @@
-﻿using System;
-using OceanLogic;
-using OceanLogic.Exceptions;
-using OceanLogic.GameObjects.AbstractObjects;
+﻿using OceanLogic;
 using OceanLogic.GameObjects;
+using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
+using System;
 
 namespace Game.UI
 {
@@ -41,8 +40,10 @@ namespace Game.UI
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("\nf - Prey\t");
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("S - Predator\t");
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("# - Obstacle\n");
         }
@@ -50,6 +51,7 @@ namespace Game.UI
         private void DisplayBorder() //Displays field boundaries
         {
             Console.ForegroundColor = ConsoleColor.Gray;
+
             for (int i = 0; i < _ocean.NumColumns; i++)
             {
                 Console.Write("*");
@@ -64,17 +66,27 @@ namespace Game.UI
             {
                 for (int j = 0; j < _ocean.NumColumns; j++)
                 {
-                    Cell cell = _ocean.GetCellAt(i, j);
+                    try
+                    {
+                        Cell cell = _ocean.GetCellAt(i, j);
 
-                    if (cell == null)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.Write(GameSettings.defaultEmptyImage);
+                        if (cell == null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write(GameSettings.defaultEmptyImage);
+                        }
+                        else
+                        {
+                            ColorCell(cell);
+                            Console.Write(cell.Image);
+                        }
                     }
-                    else
+                    catch (IndexOutOfRangeException e)
                     {
-                        ColorCell(cell);
-                        Console.Write(cell.Image);
+                        Console.WriteLine("Error: {0}", e.Message);
+                        Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                 }
 
@@ -110,9 +122,12 @@ namespace Game.UI
                             }
                         }
                     }
-                    catch (IndexOfGameFieldAbroadException e)
+                    catch (IndexOutOfRangeException e)
                     {
-                        e.DisplayErrorAndExit();
+                        Console.WriteLine("Error: {0}", e.Message);
+                        Console.WriteLine("Stack trace: {0}", e.StackTrace);
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                 }
             }
