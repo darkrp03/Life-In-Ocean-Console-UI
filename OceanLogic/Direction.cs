@@ -1,7 +1,7 @@
 ﻿using OceanLogic.Enums;
-using OceanLogic.Exceptions;
 using OceanLogic.GameObjects.AbstractObjects;
 using OceanLogic.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace OceanLogic
@@ -22,7 +22,6 @@ namespace OceanLogic
         #region Methods
         private Cell GetNorthCell(Coordinate position) //Returns western neighbour cell
         {
-
             if (position.X - 1 < 0)
             {
                 return _ocean.OceanViewer.GetCellAt(position.X, position.Y);
@@ -237,22 +236,12 @@ namespace OceanLogic
 
         public void AssignCellAt(Coordinate position, Cell cell) //Changes the value of cell
         {
-            try
+            if (position.X < 0 || position.Y < 0)
             {
-                if (position.X < 0 || position.Y < 0)
-                {
-                    throw new IndexOfGameFieldAbroadException("Playing field square index abroad!");
-                }
+                throw new IndexOutOfRangeException("The index x or y went beyond the boundaries of the playing field!");
+            }
 
-                _ocean[position.X, position.Y] = cell;
-            }
-            catch (IndexOfGameFieldAbroadException e)
-            {
-                System.Console.WriteLine("Error: {0}", e.Message);
-                System.Console.WriteLine("Stack trace: {0}", e.StackTrace);
-                System.Console.ReadKey();
-                System.Environment.Exit(0);
-            }
+            _ocean[position.X, position.Y] = cell;
         }
         #endregion
     }
