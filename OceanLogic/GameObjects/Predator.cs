@@ -80,7 +80,7 @@ namespace OceanLogic.GameObjects
             {
                 if (_timeToReproduce-- > 0)
                 {
-                    Coordinate preyNeighbourPosition = ocean.Direction.GetPreyNeighborCoord(GameSettings.defaultPreyImage, Offset);
+                    Coordinate preyNeighbourPosition = ocean.Direction.GetEntityNeighborCoord(GameSettings.defaultPreyImage, Offset);
 
                     if (preyNeighbourPosition.X != Offset.X || preyNeighbourPosition.Y != Offset.Y)
                     {

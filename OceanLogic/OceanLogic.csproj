@@ -47,6 +47,7 @@
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Exceptions\GameFieldOverfillingException.cs" />
     <Compile Include="GameObjects\AbstractObjects\Cell.cs" />
+    <Compile Include="GameObjects\KillerWhale.cs" />
     <Compile Include="GameObjects\Obstacle.cs" />
     <Compile Include="GameObjects\Predator.cs" />
     <Compile Include="GameObjects\Prey.cs" />
