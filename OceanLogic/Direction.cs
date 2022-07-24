@@ -193,7 +193,7 @@ namespace OceanLogic
             return coordinates[Randomizer.GetRandomNumber(0, coordinates.Count)];
         }
 
-        public Coordinate GetPreyNeighborCoord(char image, Coordinate position) //Returns prey neighbor coordinate
+        public Coordinate GetEntityNeighborCoord(char image, Coordinate position) //Returns prey neighbor coordinate
         {
             var coordinates = new List<Coordinate>();
             var cells = GetNeighbourCells(position);

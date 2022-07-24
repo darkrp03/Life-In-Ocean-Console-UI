@@ -34,18 +34,25 @@ namespace Game.UI
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
+            if (cell is KillerWhale)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
         }
 
         private void DisplayExplanation() //Display information about game object in game
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\nf - Prey\t");
+            Console.Write("\nf - Fish\t");
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("S - Predator\t");
+            Console.Write("S - Shark\t");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("$ - Killer whale\t");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("# - Obstacle\n");
+            Console.Write("# - Obstacle\n");
         }
 
         private void DisplayBorder() //Displays field boundaries
@@ -140,6 +147,7 @@ namespace Game.UI
             Console.WriteLine("Obstacles: {0}", numObstacles);
             Console.WriteLine("Prey: {0}     ", numPrey);
             Console.WriteLine("Predators: {0}     ", numPredators);
+            Console.WriteLine("Killer whales: {0}      ", _ocean.NumKillerWhales);
         }
 
         public void DisplayGameOver() //Displays message when game over
@@ -152,6 +160,7 @@ namespace Game.UI
 
         public void DisplayField(int iteration) //Displays field
         {
+            Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
             DisplayStats(iteration);
             DisplayExplanation();

@@ -46,6 +46,20 @@ namespace OceanLogic.Controllers
             }
         }
 
+        private void AddKillerWhales() //Add killer whales in ocean
+        {
+            for (int i = 0; i < _ocean.NumKillerWhales; i++)
+            {
+                var coordinate = _ocean.Direction.GetNullPosition();
+
+                _ocean[coordinate.X, coordinate.Y] = new KillerWhale(new Coordinate
+                {
+                    X = coordinate.X,
+                    Y = coordinate.Y
+                }, _ocean);
+            }
+        }
+
         private void AddPrey() //Add prey in ocean
         {
             for (int i = 0; i < _ocean.NumPrey; i++)
@@ -64,6 +78,7 @@ namespace OceanLogic.Controllers
         {
             AddPrey();
             AddPredator();
+            AddKillerWhales();
             AddObstacle();
         }
 
